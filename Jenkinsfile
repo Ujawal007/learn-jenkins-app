@@ -80,9 +80,7 @@ pipeline {
                     reuseNode true
                 }
             }
-            environment{
-                CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
-            }
+            
             steps {
                 sh'''
                     npm install netlify-cli node-jq
@@ -113,6 +111,9 @@ pipeline {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
+            }
+            environment{
+                CI_ENVIRONMENT_URL = 'https://cerulean-babka-e8a77b.netlify.app/'
             }
             steps {
                 sh'''
