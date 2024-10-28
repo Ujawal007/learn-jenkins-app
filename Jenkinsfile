@@ -37,7 +37,6 @@ pipeline {
                     }
                     steps{
                         sh'''
-                            echo "Test stage"
                             #test -f build/index.html
                             npm test
                         '''
@@ -66,7 +65,7 @@ pipeline {
                     }
                     post{
                         always{
-                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Playwright Local', reportTitles: '', useWrapperFileDirectly: true])
+                            publishHTML([allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'playwright-report', reportFiles: 'index.html', reportName: 'Local E2E', reportTitles: '', useWrapperFileDirectly: true])
                         }
                     }
                 }
@@ -79,6 +78,10 @@ pipeline {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
                     reuseNode true
                 }
+            }
+
+            environment{
+                CI_ENVIRONMENT_URL = 'STAGING_URL_TO_BE_SET'
             }
             
             steps {
@@ -117,6 +120,7 @@ pipeline {
             }
             steps {
                 sh'''
+                    node --version
                     npm install netlify-cli
                     node_modules/.bin/netlify --version
                     echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
