@@ -8,6 +8,13 @@ pipeline {
     }
 
     stages {
+
+        stage('Docker') {
+            steps{
+                sh'docker build -t my-playwright .'
+            }
+        }
+
         stage('Build') {
             agent{
                 docker{
@@ -27,7 +34,7 @@ pipeline {
             }
         }
 
-        stage('Tests'){
+        stage('Tests') {
             parallel{
                 stage('Unit Tests'){
                     agent{
@@ -61,7 +68,7 @@ pipeline {
                             npm install serve
                             node_modules/.bin/serve -s build &
                             sleep 10
-                            npx playwright test --reporter=html
+                            npx playwright test  --reporter=html
                         '''
                     }
                     post{
